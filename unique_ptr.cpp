@@ -43,32 +43,10 @@ class UniquePtr {
         T* ptr;
 };
 
-template<typename T>
-class SharedPtr{
-    public:
-        SharedPtr(){
-            this->ptr = nullptr;
-            this->counter = new Counter(1);
-        }
-
-        ~SharedPtr(){
-            if (--this->counter->count == 0) {
-                delete this->ptr;
-                delete this->counter;
-            }
-        }
-
-    private:
-        struct Counter{
-            int count = 0;
-        };
-
-        T* ptr;
-        Counter* counter;
-};
 
 int main() {
     {
+         // worked
         UniquePtr<A> a_ptr(new A);
         decltype(a_ptr) b_ptr = std::move(a_ptr);
 

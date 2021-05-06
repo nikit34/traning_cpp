@@ -20,7 +20,7 @@ class UniquePtr {
         UniquePtr(T* ptr){
             this->ptr = ptr;
         }
-        UniquePtr(UniquePtr&& ref){
+        UniquePtr(UniquePtr&& ref) {
             this->ptr = ref.ptr;
             ref.ptr = nullptr;
         }
@@ -41,6 +41,30 @@ class UniquePtr {
 
     private:
         T* ptr;
+};
+
+template<typename T>
+class SharedPtr{
+    public:
+        SharedPtr(){
+            this->ptr = nullptr;
+            this->counter = new Counter(1);
+        }
+
+        ~SharedPtr(){
+            if (--this->counter->count == 0) {
+                delete this->ptr;
+                delete this->counter;
+            }
+        }
+
+    private:
+        struct Counter{
+            int count = 0;
+        };
+
+        T* ptr;
+        Counter* counter;
 };
 
 int main() {

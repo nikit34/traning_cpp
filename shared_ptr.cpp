@@ -16,17 +16,21 @@ class SharedPtr{
     public:
         SharedPtr(){
             this->ptr = nullptr;
-            this->counter = new Counter(1);
+            this->counter = new Counter{ 1 };
+        }
+        SharedPtr(T* ptr){
+            this->ptr = ptr;
+            this->counter = new Counter{ 1 };
         }
         SharedPtr(const SharedPtr& ref){
             this->Reset();
-            this->ptr = ref;
+            this->ptr = ref.ptr;
             this->cointer->count = ref.counter;
             ++this->cointer->count;
         }
         SharedPtr& operator=(const SharedPtr& ref){
             this->Reset();
-            this->ptr = ref;
+            this->ptr = ref.ptr;
             this->cointer->count = ref.counter;
             ++this->cointer->count;
             return *this;
@@ -46,7 +50,7 @@ class SharedPtr{
         }
 
     private:
-        struct Counter{
+        struct Counter {
             int count = 0;
 
             ~Counter(){
@@ -59,21 +63,15 @@ class SharedPtr{
 };
 
 void func(){
-    SharedPtr<A> ptr;
+    SharedPtr<A> ptr(new A);
+    auto ptr1 = ptr;
+    auto ptr2 = ptr;
+    auto ptr3 = ptr;
+    return;
 }
 
 int main() {
-    {
-        func();
+    func();
 
-
-        // worked
-        UniquePtr<A> a_ptr(new A);
-        decltype(a_ptr) b_ptr = std::move(a_ptr);
-
-        // this do prohibitions on constructors
-        // decltype(a_ptr) b_ptr(a_ptr);
-        // decltype(a_ptr) b_ptr = a_ptr;
-    }
     return 0;
 }

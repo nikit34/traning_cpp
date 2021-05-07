@@ -25,14 +25,14 @@ class SharedPtr{
         SharedPtr(const SharedPtr& ref){
             this->Reset();
             this->ptr = ref.ptr;
-            this->cointer->count = ref.counter;
-            ++this->cointer->count;
+            this->counter = ref.counter;
+            ++this->counter->count;
         }
         SharedPtr& operator=(const SharedPtr& ref){
             this->Reset();
             this->ptr = ref.ptr;
-            this->cointer->count = ref.counter;
-            ++this->cointer->count;
+            this->counter = ref.counter;
+            ++this->counter->count;
             return *this;
         }
 
